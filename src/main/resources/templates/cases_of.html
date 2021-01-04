@@ -44,7 +44,7 @@
 
                         <select name="day" id="day" th:field="*{day}" style="width: 150px; margin-top: 5px; visibility: hidden"></select>
 
-                        <p><input type="submit" value="Show results" style="margin-top: 10px" onclick="execute('year', '--Select year--' , 'month', '--Select month--', 'day', '--Select day--')"></p>
+                        <p><input type="submit" value="Show results" style="margin-top: 10px"></p>
 
                     </form>
                 </ul>
@@ -138,10 +138,19 @@
 
         if((parseInt(chosenYear) < new Date().getFullYear()))
         {
-            for(let i = 1; i <= new Date(parseInt(chosenYear), currentChosenMonth + 1, 0).getDate(); i++)
+            let countBegin = 1;
+            let index = 0;
+
+            if((parseInt(chosenYear) === 2020 && currentChosenMonth === 0))
             {
-                options.push(i);
-                let opt = options[i-1]
+                countBegin = 22;
+            }
+
+            for(countBegin; countBegin <= new Date(parseInt(chosenYear), currentChosenMonth + 1, 0).getDate(); countBegin++)
+            {
+                options.push(countBegin);
+                let opt = options[index];
+                index++;
                 let el = document.createElement("option");
                 el.textContent = opt;
                 el.value = opt;
@@ -272,27 +281,6 @@
             document.getElementById(day).style.visibility = 'visible';
         }
     }
-
-   /* function execute(year, selYear, month, selMonth, day, selDay)
-    {
-        let getYearVal = document.getElementById(year).options[document.getElementById(year).selectedIndex].text;
-        let getMonthVal = document.getElementById(month).options[document.getElementById(month).selectedIndex].text;
-        let getDayVal = document.getElementById(day).options[document.getElementById(day).selectedIndex].text;
-
-        if(getDayVal !== selDay && getMonthVal !== selMonth && getYearVal !== selYear)
-        {
-            document.getElementById(year).style.borderColor = "black";
-            document.getElementById(month).style.borderColor = "black";
-            document.getElementById(day).style.borderColor = "black";
-            return "cases_of_recovery.html";
-        }
-        else
-        {
-            document.getElementById(year).style.borderColor = "red";
-            document.getElementById(month).style.borderColor = "red";
-            document.getElementById(day).style.borderColor = "red";
-        }
-    }*/
 
 </script>
 
