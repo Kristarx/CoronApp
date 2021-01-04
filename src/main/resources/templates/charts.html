@@ -1,0 +1,658 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymleaf.org" class="h-100">
+<head>
+    <meta charset="UTF-8">
+    <title>CoronApp</title>
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"/>
+    <link rel="stylesheet" th:href="@{style.css}"/>
+
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+          integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
+          crossorigin=""/>
+
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
+            integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
+            crossorigin=""></script>
+
+</head>
+<body class="d-flex flex-column h-100">
+
+<div th:replace="~{navigation :: navigation}"></div>
+
+<main role="main" class="flex-shrink-8">
+    <div class="container mt-5">
+        <div class="jumbotron">
+            <h1 class="display-4" style="padding-bottom: 20px; text-align: center">Charts</h1>
+        </div>
+
+        <div class="jumbotron">
+            <ul>
+                <form th:action="@{/chooseCountryCharts}" th:object="${DateAndCountry}" method="post">
+
+
+                    <p><select id="country" name="country" th:field="*{country}">
+                        <option value="--Select country--">--Select country--</option>
+                        <option value="Afghanistan">Afghanistan</option>
+                        <option value="Albania">Albania</option>
+                        <option value="Algeria">Algeria</option>
+                        <option value="Andorra">Andorra</option>
+                        <option value="Angola">Angola</option>
+                        <option value="Antigua and Barbuda">Antigua and Barbuda</option>
+                        <option value="Argentina">Argentina</option>
+                        <option value="Armenia">Armenia</option>
+                        <option value="Australia (Australian Capital Territory)">Australia (Australian Capital Territory)</option>
+                        <option value="Australia (New South Wales)">Australia (New South Wales)</option>
+                        <option value="Australia (Northern Territory)">Australia (Northern Territory)</option>
+                        <option value="Australia (Queensland)">Australia (Queensland)</option>
+                        <option value="Australia (South Australia)">Australia (South Australia)</option>
+                        <option value="Australia (Tasmania)">Australia (Tasmania)</option>
+                        <option value="Australia (Victoria)">Australia (Victoria)</option>
+                        <option value="Australia (Western Australia)">Australia (Western Australia)</option>
+                        <option value="Austria">Austria</option>
+                        <option value="Azerbaijan">Azerbaijan</option>
+                        <option value="Bahamas">Bahamas</option>
+                        <option value="Bahrain">Bahrain</option>
+                        <option value="Bangladesh">Bangladesh</option>
+                        <option value="Barbados">Barbados</option>
+                        <option value="Belarus">Belarus</option>
+                        <option value="Belgium">Belgium</option>
+                        <option value="Belize">Belize</option>
+                        <option value="Benin">Benin</option>
+                        <option value="Bhutan">Bhutan</option>
+                        <option value="Bolivia">Bolivia</option>
+                        <option value="Bosnia and Herzegovina">Bosnia and Herzegovina</option>
+                        <option value="Botswana">Botswana</option>
+                        <option value="Brazil">Brazil</option>
+                        <option value="Brunei">Brunei</option>
+                        <option value="Bulgaria">Bulgaria</option>
+                        <option value="Burkina Faso">Burkina Faso</option>
+                        <option value="Burma">Burma</option>
+                        <option value="Burundi">Burundi</option>
+                        <option value="Cabo Verde">Cabo Verde</option>
+                        <option value="Cambodia">Cambodia</option>
+                        <option value="Cameroon">Cameroon</option>
+                        <option value="Canada (Alberta)">Canada (Alberta)</option>
+                        <option value="Canada (British Columbia)">Canada (British Columbia)</option>
+                        <option value="Canada (Diamond Princess)">Canada (Diamond Princess)</option>
+                        <option value="Canada (Grand Princess)">Canada (Grand Princess)</option>
+                        <option value="Canada (Manitoba)">Canada (Manitoba)</option>
+                        <option value="Canada (New Brunswick)">Canada (New Brunswick)</option>
+                        <option value="Canada (Newfoundland and Labrador)">Canada (Newfoundland and Labrador)</option>
+                        <option value="Canada (Northwest Territories)">Canada (Northwest Territories)</option>
+                        <option value="Canada (Nova Scotia)">Canada (Nova Scotia)</option>
+                        <option value="Canada (Nunavut)">Canada (Nunavut)</option>
+                        <option value="Canada (Ontario)">Canada (Ontario)</option>
+                        <option value="Canada (Prince Edward Island)">Canada (Prince Edward Island)</option>
+                        <option value="Canada (Quebec)">Canada (Quebec)</option>
+                        <option value="Canada (Saskatchewan)">Canada (Saskatchewan)</option>
+                        <option value="Canada (Yukon)">Canada (Yukon)</option>
+                        <option value="Central African Republic">Central African Republic</option>
+                        <option value="Chad">Chad</option>
+                        <option value="Chile">Chile</option>
+                        <option value="China (Anhui)">China (Anhui)</option>
+                        <option value="China (Beijing)">China (Beijing)</option>
+                        <option value="China (Chongqing)">China (Chongqing)</option>
+                        <option value="China (Fujian)">China (Fujian)</option>
+                        <option value="China (Gansu)">China (Gansu)</option>
+                        <option value="China (Guangdong)">China (Guangdong)</option>
+                        <option value="China (Guangxi)">China (Guangxi)</option>
+                        <option value="China (Guizhou)">China (Guizhou)</option>
+                        <option value="China (Hainan)">China (Hainan)</option>
+                        <option value="China (Hebei)">China (Hebei)</option>
+                        <option value="China (Heilongjiang)">China (Heilongjiang)</option>
+                        <option value="China (Henan)">China (Henan)</option>
+                        <option value="China (Hong Kong)">China (Hong Kong)</option>
+                        <option value="China (Hubei)">China (Hubei)</option>
+                        <option value="China (Hunan)">China (Hunan)</option>
+                        <option value="China (Inner Mongolia)">China (Inner Mongolia)</option>
+                        <option value="China (Jiangsu)">China (Jiangsu)</option>
+                        <option value="China (Jiangxi)">China (Jiangxi)</option>
+                        <option value="China (Jilin)">China (Jilin)</option>
+                        <option value="China (Liaoning)">China (Liaoning)</option>
+                        <option value="China (Macau)">China (Macau)</option>
+                        <option value="China (Ningxia)">China (Ningxia)</option>
+                        <option value="China (Qinghai)">China (Qinghai)</option>
+                        <option value="China (Shaanxi)">China (Shaanxi)</option>
+                        <option value="China (Shandong)">China (Shandong)</option>
+                        <option value="China (Shanghai)">China (Shanghai)</option>
+                        <option value="China (Shanxi)">China (Shanxi)</option>
+                        <option value="China (Sichuan)">China (Sichuan)</option>
+                        <option value="China (Tianjin)">China (Tianjin)</option>
+                        <option value="China (Tibet)">China (Tibet)</option>
+                        <option value="China (Xinjiang)">China (Xinjiang)</option>
+                        <option value="China (Yunnan)">China (Yunnan)</option>
+                        <option value="China (Zhejiang)">China (Zhejiang)</option>
+                        <option value="Colombia">Colombia</option>
+                        <option value="Comoros">Comoros</option>
+                        <option value="Congo (Brazzaville)">Congo (Brazzaville)</option>
+                        <option value="Congo (Kinshasa)">Congo (Kinshasa)</option>
+                        <option value="Costa Rica">Costa Rica</option>
+                        <option value="Cote d'Ivoire">Cote d'Ivoire</option>
+                        <option value="Croatia">Croatia</option>
+                        <option value="Cuba">Cuba</option>
+                        <option value="Cyprus">Cyprus</option>
+                        <option value="Czechia">Czechia</option>
+                        <option value="Denmark (Faroe Islands)">Denmark (Faroe Islands)</option>
+                        <option value="Denmark (Greenland)">Denmark (Greenland)</option>
+                        <option value="Denmark">Denmark</option>
+                        <option value="Diamond Princess">Diamond Princess</option>
+                        <option value="Djibouti">Djibouti</option>
+                        <option value="Dominica">Dominica</option>
+                        <option value="Dominican Republic">Dominican Republic</option>
+                        <option value="Ecuador">Ecuador</option>
+                        <option value="Egypt">Egypt</option>
+                        <option value="El Salvador">El Salvador</option>
+                        <option value="Equatorial Guinea">Equatorial Guinea</option>
+                        <option value="Eritrea">Eritrea</option>
+                        <option value="Estonia">Estonia</option>
+                        <option value="Eswatini">Eswatini</option>
+                        <option value="Ethiopia">Ethiopia</option>
+                        <option value="Fiji">Fiji</option>
+                        <option value="Finland">Finland</option>
+                        <option value="France (French Guiana)">France (French Guiana)</option>
+                        <option value="France (French Polynesia)">France (French Polynesia)</option>
+                        <option value="France (Guadeloupe)">France (Guadeloupe)</option>
+                        <option value="France (Martinique)">France (Martinique)</option>
+                        <option value="France (Mayotte)">France (Mayotte)</option>
+                        <option value="France (New Caledonia)">France (New Caledonia)</option>
+                        <option value="France (Reunion)">France (Reunion)</option>
+                        <option value="France (Saint Barthelemy)">France (Saint Barthelemy)</option>
+                        <option value="France (Saint Pierre and Miquelon)">France (Saint Pierre and Miquelon)</option>
+                        <option value="France (St Martin)">France (St Martin)</option>
+                        <option value="France">France</option>
+                        <option value="Gabon">Gabon</option>
+                        <option value="Gambia">Gambia</option>
+                        <option value="Georgia">Georgia</option>
+                        <option value="Germany">Germany</option>
+                        <option value="Ghana">Ghana</option>
+                        <option value="Greece">Greece</option>
+                        <option value="Grenada">Grenada</option>
+                        <option value="Guatemala">Guatemala</option>
+                        <option value="Guinea">Guinea</option>
+                        <option value="Guinea-Bissau">Guinea-Bissau</option>
+                        <option value="Guyana">Guyana</option>
+                        <option value="Haiti">Haiti</option>
+                        <option value="Holy See">Holy See</option>
+                        <option value="Honduras">Honduras</option>
+                        <option value="Hungary">Hungary</option>
+                        <option value="Iceland">Iceland</option>
+                        <option value="India">India</option>
+                        <option value="Indonesia">Indonesia</option>
+                        <option value="Iran">Iran</option>
+                        <option value="Iraq">Iraq</option>
+                        <option value="Ireland">Ireland</option>
+                        <option value="Israel">Israel</option>
+                        <option value="Italy">Italy</option>
+                        <option value="Jamaica">Jamaica</option>
+                        <option value="Japan">Japan</option>
+                        <option value="Jordan">Jordan</option>
+                        <option value="Kazakhstan">Kazakhstan</option>
+                        <option value="Kenya">Kenya</option>
+                        <option value="Korea, South">Korea, South</option>
+                        <option value="Kosovo">Kosovo</option>
+                        <option value="Kuwait">Kuwait</option>
+                        <option value="Kyrgyzstan">Kyrgyzstan</option>
+                        <option value="Laos">Laos</option>
+                        <option value="Latvia">Latvia</option>
+                        <option value="Lebanon">Lebanon</option>
+                        <option value="Lesotho">Lesotho</option>
+                        <option value="Liberia">Liberia</option>
+                        <option value="Libya">Libya</option>
+                        <option value="Liechtenstein">Liechtenstein</option>
+                        <option value="Lithuania">Lithuania</option>
+                        <option value="Luxembourg">Luxembourg</option>
+                        <option value="MS Zaandam">MS Zaandam</option>
+                        <option value="Madagascar">Madagascar</option>
+                        <option value="Malawi">Malawi</option>
+                        <option value="Malaysia">Malaysia</option>
+                        <option value="Maldives">Maldives</option>
+                        <option value="Mali">Mali</option>
+                        <option value="Malta">Malta</option>
+                        <option value="Marshall Islands">Marshall Islands</option>
+                        <option value="Mauritania">Mauritania</option>
+                        <option value="Mauritius">Mauritius</option>
+                        <option value="Mexico">Mexico</option>
+                        <option value="Moldova">Moldova</option>
+                        <option value="Monaco">Monaco</option>
+                        <option value="Mongolia">Mongolia</option>
+                        <option value="Montenegro">Montenegro</option>
+                        <option value="Morocco">Morocco</option>
+                        <option value="Mozambique">Mozambique</option>
+                        <option value="Namibia">Namibia</option>
+                        <option value="Nepal">Nepal</option>
+                        <option value="Netherlands (Aruba)">Netherlands (Aruba)</option>
+                        <option value="Netherlands (Bonaire, Sint Eustatius and Saba)">Netherlands (Bonaire, Sint Eustatius and Saba)</option>
+                        <option value="Netherlands (Curacao)">Netherlands (Curacao)</option>
+                        <option value="Netherlands (Sint Maarten)">Netherlands (Sint Maarten)</option>
+                        <option value="Netherlands">Netherlands</option>
+                        <option value="New Zealand">New Zealand</option>
+                        <option value="Nicaragua">Nicaragua</option>
+                        <option value="Niger">Niger</option>
+                        <option value="Nigeria">Nigeria</option>
+                        <option value="North Macedonia">North Macedonia</option>
+                        <option value="Norway">Norway</option>
+                        <option value="Oman">Oman</option>
+                        <option value="Pakistan">Pakistan</option>
+                        <option value="Panama">Panama</option>
+                        <option value="Papua New Guinea">Papua New Guinea</option>
+                        <option value="Paraguay">Paraguay</option>
+                        <option value="Peru">Peru</option>
+                        <option value="Philippines">Philippines</option>
+                        <option value="Poland">Poland</option>
+                        <option value="Portugal">Portugal</option>
+                        <option value="Qatar">Qatar</option>
+                        <option value="Romania">Romania</option>
+                        <option value="Russia">Russia</option>
+                        <option value="Rwanda">Rwanda</option>
+                        <option value="Saint Kitts and Nevis">Saint Kitts and Nevis</option>
+                        <option value="Saint Lucia">Saint Lucia</option>
+                        <option value="Saint Vincent and the Grenadines">Saint Vincent and the Grenadines</option>
+                        <option value="Samoa">Samoa</option>
+                        <option value="San Marino">San Marino</option>
+                        <option value="Sao Tome and Principe">Sao Tome and Principe</option>
+                        <option value="Saudi Arabia">Saudi Arabia</option>
+                        <option value="Senegal">Senegal</option>
+                        <option value="Serbia">Serbia</option>
+                        <option value="Seychelles">Seychelles</option>
+                        <option value="Sierra Leone">Sierra Leone</option>
+                        <option value="Singapore">Singapore</option>
+                        <option value="Slovakia">Slovakia</option>
+                        <option value="Slovenia">Slovenia</option>
+                        <option value="Solomon Islands">Solomon Islands</option>
+                        <option value="Somalia">Somalia</option>
+                        <option value="South Africa">South Africa</option>
+                        <option value="South Sudan">South Sudan</option>
+                        <option value="Spain">Spain</option>
+                        <option value="Sri Lanka">Sri Lanka</option>
+                        <option value="Sudan">Sudan</option>
+                        <option value="Suriname">Suriname</option>
+                        <option value="Sweden">Sweden</option>
+                        <option value="Switzerland">Switzerland</option>
+                        <option value="Syria">Syria</option>
+                        <option value="Taiwan*">Taiwan*</option>
+                        <option value="Tajikistan">Tajikistan</option>
+                        <option value="Tanzania">Tanzania</option>
+                        <option value="Thailand">Thailand</option>
+                        <option value="Timor-Leste">Timor-Leste</option>
+                        <option value="Togo">Togo</option>
+                        <option value="Trinidad and Tobago">Trinidad and Tobago</option>
+                        <option value="Tunisia">Tunisia</option>
+                        <option value="Turkey">Turkey</option>
+                        <option value="US">US</option>
+                        <option value="Uganda">Uganda</option>
+                        <option value="Ukraine">Ukraine</option>
+                        <option value="United Arab Emirates">United Arab Emirates</option>
+                        <option value="United Kingdom (Anguilla)">United Kingdom (Anguilla)</option>
+                        <option value="United Kingdom (Bermuda)">United Kingdom (Bermuda)</option>
+                        <option value="United Kingdom (British Virgin Islands)">United Kingdom (British Virgin Islands)</option>
+                        <option value="United Kingdom (Cayman Islands)">United Kingdom (Cayman Islands)</option>
+                        <option value="United Kingdom (Channel Islands)">United Kingdom (Channel Islands)</option>
+                        <option value="United Kingdom (Falkland Islands (Malvinas))">United Kingdom (Falkland Islands (Malvinas))</option>
+                        <option value="United Kingdom (Gibraltar)">United Kingdom (Gibraltar)</option>
+                        <option value="United Kingdom (Isle of Man)">United Kingdom (Isle of Man)</option>
+                        <option value="United Kingdom (Montserrat)">United Kingdom (Montserrat)</option>
+                        <option value="United Kingdom (Turks and Caicos Islands)">United Kingdom (Turks and Caicos Islands)</option>
+                        <option value="United Kingdom">United Kingdom</option>
+                        <option value="Uruguay">Uruguay</option>
+                        <option value="Uzbekistan">Uzbekistan</option>
+                        <option value="Vanuatu">Vanuatu</option>
+                        <option value="Venezuela">Venezuela</option>
+                        <option value="Vietnam">Vietnam</option>
+                        <option value="West Bank and Gaza">West Bank and Gaza</option>
+                        <option value="Yemen">Yemen</option>
+                        <option value="Zambia">Zambia</option>
+                        <option value="Zimbabwe">Zimbabwe</option>
+
+                    </select></p>
+
+                    <p><input type="submit" value="Show charts"></p>
+                </form>
+            </ul>
+        </div>
+
+    </div>
+</main>
+
+<div class="container" id="charts" style="visibility: visible">
+
+    <div class="container" style="padding-bottom: 10%">
+        <h2 align="center" style="padding-bottom: 20px">Total infection cases graph</h2>
+
+        <div id="InfectionsSum"
+             style="width: 550px; height: 600px; min-width: 1100px;  margin: 0 auto"></div>
+    </div>
+
+    <div class="container" style="padding-bottom: 10%">
+        <h2 align="center" style="padding-bottom: 20px">Periods of infection cases graph</h2>
+
+        <div id="InfectionsProgress"
+             style="width: 550px; height: 600px; min-width: 1100px; margin: 0 auto"></div>
+    </div>
+
+
+    <div class="container" style="padding-bottom: 10%">
+        <h2 align="center" style="padding-bottom: 20px">Total recovery cases graph</h2>
+
+        <div id="RecoverySum"
+             style="width: 550px; height: 600px; min-width: 1100px;  margin: 0 auto"></div>
+    </div>
+
+    <div class="container" style="padding-bottom: 10%">
+        <h2 align="center" style="padding-bottom: 20px">Periods of recovery cases graph</h2>
+
+        <div id="RecoveryProgress"
+             style="width: 550px; height: 600px; min-width: 1100px; margin: 0 auto"></div>
+    </div>
+
+    <div class="container" style="padding-bottom: 10%">
+        <h2 align="center" style="padding-bottom: 20px">Total death cases graph</h2>
+
+        <div id="DeathsSum"
+             style="width: 550px; height: 600px; min-width: 1100px;  margin: 0 auto"></div>
+    </div>
+
+    <div class="container" style="padding-bottom: 10%">
+        <h2 align="center" style="padding-bottom: 20px">Periods of death cases graph</h2>
+
+        <div id="DeathsProgress"
+             style="width: 550px; height: 600px; min-width: 1100px; margin: 0 auto"></div>
+    </div>
+
+
+</div>
+<script
+        src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+<!-- Latest compiled and minified JavaScript -->
+<script
+        src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script src="https://code.highcharts.com/highcharts.js"></script>
+<script src="https://code.highcharts.com/modules/exporting.js"></script>
+<script th:inline="javascript">
+
+    {
+        document.getElementById("charts").style.visibility = "visible";
+        $(function(){
+            Highcharts.chart('InfectionsSum', {
+                chart: {
+                    type: 'line'
+                },
+                title: {
+                    text: ['Total infection cases in ' + [[${country}]]]
+                },
+                subtitle: {
+                    text: ['Total infection cases in ' + [[${country}]] + ' on every day from the beginning of pandemic']
+                },
+                xAxis: {
+                    categories: [[${surveyMap.keySet()}]],
+                    title: {
+                        text: 'Date'
+                    },
+                    crosshair: true
+                },
+                yAxis: {
+                    title: {
+                        text: 'Total infection cases'
+                    }
+                },
+                tooltip: {
+                    headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+                    pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+                        '<td style="padding:0"><b>{point.y:.1f} K</b></td></tr>',
+                    footerFormat: '</table>',
+                    shared: true,
+                    useHTML: true
+                },
+                plotOptions: {
+                    column: {
+                        pointPadding: 0.2,
+                        borderWidth: 0
+                    }
+                },
+                series: [{
+                    name: 'Cases',
+                    data: [[${surveyMap.values()}]]
+                }]
+            });
+        });
+
+
+        $(function(){
+            Highcharts.chart('InfectionsProgress', {
+                chart: {
+                    type: 'line'
+                },
+                title: {
+                    text: ['Periods of infection cases in ' + [[${country}]]]
+                },
+                subtitle: {
+                    text: ['Periods of infection cases in ' + [[${country}]] + ' on every fifth day from the beginning of pandemic']
+                },
+                xAxis: {
+                    categories: [[${surveyMap.keySet()}]],
+                    title: {
+                        text: 'Date'
+                    },
+                    crosshair: true
+                },
+                yAxis: {
+                    title: {
+                        text: 'Difference between present day and five days earlier'
+                    }
+                },
+                tooltip: {
+                    headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+                    pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+                        '<td style="padding:0"><b>{point.y:.1f} K</b></td></tr>',
+                    footerFormat: '</table>',
+                    shared: true,
+                    useHTML: true
+                },
+                plotOptions: {
+                    column: {
+                        pointPadding: 0.2,
+                        borderWidth: 0
+                    }
+                },
+                series: [{
+                    name: 'Cases',
+                    data: [[${surveyMap.values()}]]
+                }]
+            });
+        });
+
+        $(function(){
+            Highcharts.chart('RecoverySum', {
+                chart: {
+                    type: 'line'
+                },
+                title: {
+                    text: ['Total recovery cases in ' + [[${country}]]]
+                },
+                subtitle: {
+                    text: ['Total recovery cases in ' + [[${country}]] + ' on every day from the beginning of pandemic']
+                },
+                xAxis: {
+                    categories: [[${surveyMap.keySet()}]],
+                    title: {
+                        text: 'Date'
+                    },
+                    crosshair: true
+                },
+                yAxis: {
+                    title: {
+                        text: 'Total recovery cases'
+                    }
+                },
+                tooltip: {
+                    headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+                    pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+                        '<td style="padding:0"><b>{point.y:.1f} K</b></td></tr>',
+                    footerFormat: '</table>',
+                    shared: true,
+                    useHTML: true
+                },
+                plotOptions: {
+                    column: {
+                        pointPadding: 0.2,
+                        borderWidth: 0
+                    }
+                },
+                series: [{
+                    name: 'Cases',
+                    data: [[${surveyMap.values()}]]
+                }]
+            });
+        });
+
+        $(function(){
+            Highcharts.chart('RecoveryProgress', {
+                chart: {
+                    type: 'line'
+                },
+                title: {
+                    text: ['Periods of recovery cases in ' + [[${country}]]]
+                },
+                subtitle: {
+                    text: ['Periods recovery cases in ' + [[${country}]] + ' on every fifth day from the beginning of pandemic']
+                },
+                xAxis: {
+                    categories: [[${surveyMap.keySet()}]],
+                    title: {
+                        text: 'Date'
+                    },
+                    crosshair: true
+                },
+                yAxis: {
+                    title: {
+                        text: 'Difference between present day and five days earlier'
+                    }
+                },
+                tooltip: {
+                    headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+                    pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+                        '<td style="padding:0"><b>{point.y:.1f} K</b></td></tr>',
+                    footerFormat: '</table>',
+                    shared: true,
+                    useHTML: true
+                },
+                plotOptions: {
+                    column: {
+                        pointPadding: 0.2,
+                        borderWidth: 0
+                    }
+                },
+                series: [{
+                    name: 'Cases',
+                    data: [[${surveyMap.values()}]]
+                }]
+            });
+        });
+
+        $(function(){
+            Highcharts.chart('DeathsSum', {
+                chart: {
+                    type: 'line'
+                },
+                title: {
+                    text: ['Total death cases in ' + [[${country}]]]
+                },
+                subtitle: {
+                    text: ['Total death cases in ' + [[${country}]] + ' on every day from the beginning of pandemic']
+                },
+                xAxis: {
+                    categories: [[${surveyMap.keySet()}]],
+                    title: {
+                        text: 'Date'
+                    },
+                    crosshair: true
+                },
+                yAxis: {
+                    title: {
+                        text: 'Total death cases'
+                    }
+                },
+                tooltip: {
+                    headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+                    pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+                        '<td style="padding:0"><b>{point.y:.1f} K</b></td></tr>',
+                    footerFormat: '</table>',
+                    shared: true,
+                    useHTML: true
+                },
+                plotOptions: {
+                    column: {
+                        pointPadding: 0.2,
+                        borderWidth: 0
+                    }
+                },
+                series: [{
+                    name: 'Cases',
+                    data: [[${surveyMap.values()}]]
+                }]
+            });
+        });
+
+        $(function(){
+            Highcharts.chart('DeathsProgress', {
+                chart: {
+                    type: 'line'
+                },
+                title: {
+                    text: ['Periods of death cases in ' + [[${country}]]]
+                },
+                subtitle: {
+                    text: ['Periods death cases in ' + [[${country}]] + ' on every fifth day from the beginning of pandemic']
+                },
+                xAxis: {
+                    categories: [[${surveyMap.keySet()}]],
+                    title: {
+                        text: 'Date'
+                    },
+                    crosshair: true
+                },
+                yAxis: {
+                    title: {
+                        text: 'Difference between present day and five days earlier'
+                    }
+                },
+                tooltip: {
+                    headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+                    pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+                        '<td style="padding:0"><b>{point.y:.1f} K</b></td></tr>',
+                    footerFormat: '</table>',
+                    shared: true,
+                    useHTML: true
+                },
+                plotOptions: {
+                    column: {
+                        pointPadding: 0.2,
+                        borderWidth: 0
+                    }
+                },
+                series: [{
+                    name: 'Cases',
+                    data: [[${surveyMap.values()}]]
+                }]
+            });
+        });
+    }
+
+
+
+</script>
+
+
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous">
+
+</script>
+
+<script
+        src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js">
+
+</script>
+
+</body>
+</html>

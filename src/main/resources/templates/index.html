@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymleaf.org" class="h-100">
+<head>
+    <meta charset="UTF-8">
+    <title>CoronApp</title>
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"/>
+    <link rel="stylesheet" th:href="@{style.css}"/>
+
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+          integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
+          crossorigin=""/>
+
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
+            integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
+            crossorigin=""></script>
+
+</head>
+<body class="d-flex flex-column h-100">
+
+    <div th:replace="~{navigation :: navigation}"></div>
+
+
+    <main role="main" class="flex-shrink-8">
+        <div class="container mt-3">
+            <div class="jumbotron">
+                <h1 class="display-6">In this application are presented historical data of coronavirus SARS-CoV-19. You can take a look at
+                three types of cases: infections, recovery and deaths. Additionally in tab "Charts" you can print a chart with specific date range and
+                    previously mentioned one of three cases. Data are worldwide collected. </h1>
+            </div>
+        </div>
+    </main>
+
+</body>
+</html>
+

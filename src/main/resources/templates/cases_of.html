@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymleaf.org" class="h-100">
+<head>
+    <meta charset="UTF-8">
+    <title>CoronApp</title>
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"/>
+    <link rel="stylesheet" th:href="@{style.css}"/>
+
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+          integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
+          crossorigin=""/>
+
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
+            integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
+            crossorigin=""></script>
+
+    <style>#mapid { height: 100vh;
+        margin: 30px;}
+    </style>
+
+</head>
+<body class="d-flex flex-column h-100">
+
+<div th:replace="~{navigation :: navigation}"></div>
+
+
+<main role="main" class="flex-shrink-8">
+
+    <div class="container mt-5">
+
+        <div class="container mt-5">
+            <div class="jumbotron">
+                <h1 class="display-4" th:text="${cases}" style="text-align: center"></h1>
+            </div>
+
+            <div class="jumbotron">
+                <ul>
+                    <form th:action="@{/validDate}" th:object="${ValidReceiveDateForCSV}" method="post">
+
+                        <select name="year" id="year" th:field="*{year}" style="width: 150px; margin-top: 5px; visibility: visible" onchange="visibleMonth('year', '--Select year--', 'day', '--Select day--', 'month'); setMonths()"></select>
+
+                        <select name="month" id="month" th:field="*{month}" style="width: 150px; margin-top: 5px; visibility: hidden" onchange="visibleDay('month', '--Select month--', 'day'); setDay()"></select>
+
+                        <select name="day" id="day" th:field="*{day}" style="width: 150px; margin-top: 5px; visibility: hidden"></select>
+
+                        <p><input type="submit" value="Show results" style="margin-top: 10px" onclick="execute('year', '--Select year--' , 'month', '--Select month--', 'day', '--Select day--')"></p>
+
+                    </form>
+                </ul>
+
+            </div>
+
+            <div id="mapid"></div>
+
+            <script th:inline="javascript">
+
+                let points = [[${points}]];
+
+                let map = L.map('mapid').setView([45, 0], 4);
+
+
+                L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                }).addTo(map);
+
+                points.forEach(value => {
+                    L.marker([value.lat, value.lon]).addTo(map)
+                        .bindPopup(value.text)
+
+                })
+
+            </script>
+        </div>
+    </div>
+</main>
+
+
+<script>
+    let select = document.getElementById("year");
+    let options = ["--Select year--", "2020"];
+    let addedVal = 2020;
+    let currentYear = new Date().getFullYear();
+
+    while(addedVal < currentYear)
+    {
+        addedVal++;
+        options.push(addedVal.toString());
+    }
+
+
+    for(let i = 0; i < options.length; i++)
+    {
+        let opt = options[i];
+        let el = document.createElement("option");
+        el.textContent = opt;
+        el.value = opt;
+        select.appendChild(el);
+    }
+</script>
+
+
+<script>
+
+    function setDay()
+    {
+        const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+        let chosenYear = document.getElementById("year")[document.getElementById("year").selectedIndex].value;
+        let chosenMonth = document.getElementById("month")[document.getElementById("month").selectedIndex].value;
+        let select = document.getElementById("day");
+      //  let currentMonth = new Date().getMonth();
+        let options = [];
+        let currentChosenMonth = 0;
+
+
+        while (select.firstChild)
+        {
+            select.removeChild(select.lastChild);
+        }
+
+        if(chosenMonth !== '--Select month--')
+        {
+            while(monthNames[currentChosenMonth] !== chosenMonth)
+            {
+                currentChosenMonth++;
+            }
+        }
+        else
+        {
+            document.getElementById("day").style.visibility = "hidden";
+        }
+
+
+        console.log('Value number: ' + currentChosenMonth);
+        console.log('Value month: ' + monthNames[currentChosenMonth]);
+        console.log('Value year: ' + chosenYear);
+        console.log('Something wrong happens: ' + new Date(parseInt(chosenYear), currentChosenMonth + 1, 0).getDate());
+
+        if((parseInt(chosenYear) < new Date().getFullYear()))
+        {
+            for(let i = 1; i <= new Date(parseInt(chosenYear), currentChosenMonth + 1, 0).getDate(); i++)
+            {
+                options.push(i);
+                let opt = options[i-1]
+                let el = document.createElement("option");
+                el.textContent = opt;
+                el.value = opt;
+                select.appendChild(el);
+            }
+        }
+        else
+        {
+            if(currentChosenMonth < new Date().getMonth())
+            {
+                for(let i = 1; i <= new Date(parseInt(chosenYear), currentChosenMonth + 1, 0).getDate(); i++)
+                {
+                    options.push(i)
+                }
+
+                for(let i = 1; i <= options.length; i++)
+                {
+                    let opt = options[i];
+                    let el = document.createElement("option");
+                    el.textContent = opt;
+                    el.value = opt;
+                    select.appendChild(el);
+                }
+            }
+            else
+            {
+                for(let i = 1; i < new Date().getDate(); i++)
+                {
+                    options.push(i)
+                }
+
+                for(let i = 0; i < options.length; i++)
+                {
+                    let opt = options[i];
+                    let el = document.createElement("option");
+                    el.textContent = opt;
+                    el.value = opt;
+                    select.appendChild(el);
+                }
+            }
+        }
+    }
+
+    function setMonths()
+    {
+        const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+        let select = document.getElementById("month");
+        let options = ["--Select month--"];
+        let chosenYear = document.getElementById("year")[document.getElementById("year").selectedIndex].value;
+        let currentYear = new Date().getFullYear();
+
+
+        while (select.firstChild) {
+            select.removeChild(select.lastChild);
+        }
+
+
+        console.log((chosenYear));
+
+        if(parseInt(chosenYear) < currentYear)
+        {
+            for(let i = 0; i < monthNames.length; i++)
+            {
+                options.push(monthNames[i])
+            }
+
+            for(let i = 0; i < options.length; i++)
+            {
+                let opt = options[i];
+                let el = document.createElement("option");
+                el.textContent = opt;
+                el.value = opt;
+                select.appendChild(el);
+            }
+        }
+        else
+        {
+            const currentMonth = new Date().getMonth();
+
+            for(let i = 0; i <= currentMonth; i++)
+            {
+                options.push(monthNames[i])
+            }
+
+            for(let i = 0; i < options.length; i++)
+            {
+                let opt = options[i];
+                let el = document.createElement("option");
+                el.textContent = opt;
+                el.value = opt;
+                select.appendChild(el);
+            }
+        }
+
+
+    }
+
+    function visibleMonth(part, select, day, selDay, month)
+    {
+        let getSelect = document.getElementById(part);
+        let selectedText = getSelect.options[getSelect.selectedIndex].text;
+
+        if (selectedText === select)
+        {
+            document.getElementById(day).style.visibility = 'hidden';
+            document.getElementById(day).selectedIndex = "0";
+            document.getElementById(month).style.visibility = 'hidden';
+            document.getElementById(month).selectedIndex = "0";
+        }
+        else
+        {
+            document.getElementById(month).style.visibility = 'visible';
+        }
+    }
+
+    function visibleDay(part, select, day)
+    {
+        let getSelect = document.getElementById(part);
+        let selectedText = getSelect.options[getSelect.selectedIndex].text;
+
+        if (selectedText === select)
+        {
+            document.getElementById(day).style.visibility = 'hidden';
+            document.getElementById(day).selectedIndex = "0";
+        }
+        else
+        {
+            document.getElementById(day).style.visibility = 'visible';
+        }
+    }
+
+   /* function execute(year, selYear, month, selMonth, day, selDay)
+    {
+        let getYearVal = document.getElementById(year).options[document.getElementById(year).selectedIndex].text;
+        let getMonthVal = document.getElementById(month).options[document.getElementById(month).selectedIndex].text;
+        let getDayVal = document.getElementById(day).options[document.getElementById(day).selectedIndex].text;
+
+        if(getDayVal !== selDay && getMonthVal !== selMonth && getYearVal !== selYear)
+        {
+            document.getElementById(year).style.borderColor = "black";
+            document.getElementById(month).style.borderColor = "black";
+            document.getElementById(day).style.borderColor = "black";
+            return "cases_of_recovery.html";
+        }
+        else
+        {
+            document.getElementById(year).style.borderColor = "red";
+            document.getElementById(month).style.borderColor = "red";
+            document.getElementById(day).style.borderColor = "red";
+        }
+    }*/
+
+</script>
+
+</body>
+</html>
