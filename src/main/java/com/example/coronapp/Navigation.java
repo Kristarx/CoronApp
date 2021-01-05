@@ -4,7 +4,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.awt.desktop.SystemSleepEvent;
+//import java.awt.desktop.SystemSleepEvent;
 import java.io.IOException;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -87,15 +87,30 @@ public class Navigation
     }
 
     @GetMapping("/charts")
-    public String getCharts(Model model){
+    public String getCharts(Model model)  {
 
+        Map<String, Integer> readDataInfectionsSum = new LinkedHashMap<>();
+        Map<String, Integer> readDataRecoverySum = new LinkedHashMap<>();
+        Map<String, Integer> readDataInfectionsPeriods = new LinkedHashMap<>();
+        Map<String, Integer> readDataRecoveryPeriods = new LinkedHashMap<>();
+        Map<String, Integer> readDataDeathsSum = new LinkedHashMap<>();
+        Map<String, Integer> readDataDeathsPeriods = new LinkedHashMap<>();
 
         model.addAttribute("activePage", "charts");
-
         ReadFromFile read = new ReadFromFile();
+        ReadFromFile read2 = new ReadFromFile();
+        ReadFromFile read3 = new ReadFromFile();
+        ReadFromFile read4 = new ReadFromFile();
+        ReadFromFile read5 = new ReadFromFile();
+        ReadFromFile read6 = new ReadFromFile();
 
-        readData = read.readFile("src/main/resources/Files/InfectionsSum.txt", chosenCountry.trim());
-
+        //readData = read.readFile("src/main/resources/Files/InfectionsSum.txt", chosenCountry.trim());
+        readDataInfectionsSum = read.readFile("src/main/resources/Files/InfectionsSum.txt", chosenCountry.trim());
+        readDataInfectionsPeriods = read2.readFile("src/main/resources/Files/InfectionsPeriods.txt", chosenCountry.trim());
+        readDataRecoverySum = read3.readFile("src/main/resources/Files/RecoverySum.txt", chosenCountry.trim());
+        readDataRecoveryPeriods = read4.readFile("src/main/resources/Files/RecoveryPeriods.txt", chosenCountry.trim());
+        readDataDeathsSum = read5.readFile("src/main/resources/Files/DeathsSum.txt", chosenCountry.trim());
+        readDataDeathsPeriods = read6.readFile("src/main/resources/Files/DeathsPeriods.txt", chosenCountry.trim());
         if(checkIfRedirectChart != 0 || chosenCountry.equals("--Select country--"))
         {
             chosenCountry = "(please select country from list)";
@@ -103,8 +118,14 @@ public class Navigation
 
         checkIfRedirectChart++;
 
+        //model.addAttribute("surveyMap", readData);
         model.addAttribute("country", chosenCountry);
-        model.addAttribute("surveyMap", readData);
+        model.addAttribute("surveyMapInfectionsSum", readDataInfectionsSum);
+        model.addAttribute("surveyMapRecoverySum", readDataRecoverySum);
+        model.addAttribute("surveyMapInfectionsPeriods", readDataInfectionsPeriods);
+        model.addAttribute("surveyMapRecoveryPeriods", readDataRecoveryPeriods);
+        model.addAttribute("surveyMapDeathsSum", readDataDeathsSum);
+        model.addAttribute("surveyMapDeathsPeriods", readDataDeathsPeriods);
         model.addAttribute("DateAndCountry", new DateAndCountry());
 
         return "charts";
