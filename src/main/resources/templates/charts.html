@@ -384,7 +384,7 @@
                     text: ['Total infection cases in ' + [[${country}]] + ' on every day from the beginning of pandemic']
                 },
                 xAxis: {
-                    categories: [[${surveyMap.keySet()}]],
+                    categories: [[${surveyMapInfectionsSum.keySet()}]],
                     title: {
                         text: 'Date'
                     },
@@ -411,7 +411,7 @@
                 },
                 series: [{
                     name: 'Cases',
-                    data: [[${surveyMap.values()}]]
+                    data: [[${surveyMapInfectionsSum.values()}]]
                 }]
             });
         });
@@ -429,7 +429,7 @@
                     text: ['Periods of infection cases in ' + [[${country}]] + ' on every fifth day from the beginning of pandemic']
                 },
                 xAxis: {
-                    categories: [[${surveyMap.keySet()}]],
+                    categories: [[${surveyMapInfectionsPeriods.keySet()}]],
                     title: {
                         text: 'Date'
                     },
@@ -456,7 +456,7 @@
                 },
                 series: [{
                     name: 'Cases',
-                    data: [[${surveyMap.values()}]]
+                    data: [[${surveyMapInfectionsPeriods.values()}]]
                 }]
             });
         });
@@ -473,7 +473,7 @@
                     text: ['Total recovery cases in ' + [[${country}]] + ' on every day from the beginning of pandemic']
                 },
                 xAxis: {
-                    categories: [[${surveyMap.keySet()}]],
+                    categories: [[${surveyMapRecoverySum.keySet()}]],
                     title: {
                         text: 'Date'
                     },
@@ -500,7 +500,7 @@
                 },
                 series: [{
                     name: 'Cases',
-                    data: [[${surveyMap.values()}]]
+                    data: [[${surveyMapRecoverySum.values()}]]
                 }]
             });
         });
@@ -517,7 +517,7 @@
                     text: ['Periods recovery cases in ' + [[${country}]] + ' on every fifth day from the beginning of pandemic']
                 },
                 xAxis: {
-                    categories: [[${surveyMap.keySet()}]],
+                    categories: [[${surveyMapRecoveryPeriods.keySet()}]],
                     title: {
                         text: 'Date'
                     },
@@ -544,7 +544,7 @@
                 },
                 series: [{
                     name: 'Cases',
-                    data: [[${surveyMap.values()}]]
+                    data: [[${surveyMapRecoveryPeriods.values()}]]
                 }]
             });
         });
@@ -561,7 +561,7 @@
                     text: ['Total death cases in ' + [[${country}]] + ' on every day from the beginning of pandemic']
                 },
                 xAxis: {
-                    categories: [[${surveyMap.keySet()}]],
+                    categories: [[${surveyMapDeathsSum.keySet()}]],
                     title: {
                         text: 'Date'
                     },
@@ -588,7 +588,7 @@
                 },
                 series: [{
                     name: 'Cases',
-                    data: [[${surveyMap.values()}]]
+                    data: [[${surveyMapDeathsSum.values()}]]
                 }]
             });
         });
@@ -605,7 +605,7 @@
                     text: ['Periods death cases in ' + [[${country}]] + ' on every fifth day from the beginning of pandemic']
                 },
                 xAxis: {
-                    categories: [[${surveyMap.keySet()}]],
+                    categories: [[${surveyMapDeathsPeriods.keySet()}]],
                     title: {
                         text: 'Date'
                     },
@@ -632,7 +632,7 @@
                 },
                 series: [{
                     name: 'Cases',
-                    data: [[${surveyMap.values()}]]
+                    data: [[${surveyMapDeathsPeriods.values()}]]
                 }]
             });
         });
